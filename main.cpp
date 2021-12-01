@@ -60,7 +60,7 @@ Rect user;
 void initFields() {
 
     startLights = false;
-    lightOneActive = true;
+    lightOneActive = false;
     lightTwoActive = false;
 
     lightOneGreenState = true; // Initializer
@@ -235,81 +235,158 @@ void mouse(int button, int state, int x, int y) {
 void timer(int dummy) {
 
     if(startLights) {
-        if (lightOneActive) {
+
+        // Starts lights at red
+        if (!lightOneActive && !lightTwoActive) {
+
+            // Light One
+            lightOneGreen.setColor(green);
+            lightOneYellow.setColor(yellow);
+            lightOneRed.setColor(lightRed);
+
+            // Light Two
+            lightTwoGreen.setColor(green);
+            lightTwoYellow.setColor(yellow);
+            lightTwoRed.setColor(lightRed);
+
+            // Activate state of first light to start loop
+            lightOneActive = true;
+
+            glutTimerFunc(5000, timer, dummy);
+
+        }
+
+        else if (lightOneActive) {
             //startLights = false;
             //lightOneGreenState = true;
 
             if (lightOneGreenState) {
+
+                // Change states
                 lightOneGreenState = false;
-                lightOneRed.setColor(red);
-                lightOneGreen.setColor(lightGreen);
                 lightOneYellowState = true;
+
+                // Light One
+                lightOneGreen.setColor(lightGreen);
+                lightOneYellow.setColor(yellow);
+                lightOneRed.setColor(red);
+
+                // Light Two
+                lightTwoGreen.setColor(green);
+                lightTwoYellow.setColor(yellow);
                 lightTwoRed.setColor(lightRed);
+
+                //lightTwoRed.setColor(lightRed);
                 glutTimerFunc(5000, timer, dummy);
-            } else if (lightOneYellowState) {
+            }
+
+            else if (lightOneYellowState) {
+
+                // Change States
                 lightOneYellowState = false;
+                lightOneRedState = true;
+
+                // Light One
                 lightOneGreen.setColor(green);
                 lightOneYellow.setColor(lightYellow);
-                lightOneRedState = true;
+                lightOneRed.setColor(red);
+
+                // Light Two
+                lightTwoGreen.setColor(green);
+                lightTwoYellow.setColor(yellow);
+                lightTwoRed.setColor(lightRed);
+
                 glutTimerFunc(5000, timer, dummy);
-            } else if (lightOneRedState) {
+            }
+
+            else if (lightOneRedState) {
+
+                // Change states
                 lightOneRedState = false;
-                lightOneYellow.setColor(yellow);
-                lightOneRed.setColor(lightRed);
-                lightOneGreenState = true;
+                lightTwoGreenState = true;
                 lightTwoActive = true;
                 lightOneActive = false;
-                //lightTwoGreenState = true;
-                glutTimerFunc(5000, timer, dummy);
-            }
 
-                // If other light active, keep red lit
-            else {
+                // Light One
                 lightOneGreen.setColor(green);
                 lightOneYellow.setColor(yellow);
-                lightTwoGreenState = true;
-                glutTimerFunc(5000, timer, dummy);
-                //lightTwoGreenState = true;
-                //lightOneRed.setColor(lightRed);
-                //glutTimerFunc(1000, timer, dummy);
-            }
+                lightOneRed.setColor(lightRed);
 
+                // Light Two
+                lightTwoGreen.setColor(green);
+                lightTwoYellow.setColor(yellow);
+                lightTwoRed.setColor(lightRed);
+
+                //lightTwoGreenState = true;
+                glutTimerFunc(5000, timer, dummy);
+            }
 
         }
 
-        if (lightTwoActive) {
+        else if (lightTwoActive) {
 
             //lightTwoGreenState = true;
+
             if (lightTwoGreenState) {
+
+                // Change States
                 lightTwoGreenState = false;
-                lightTwoGreen.setColor(lightGreen);
-                lightTwoRed.setColor(red);
                 lightTwoYellowState = true;
+
+                // Change light colors
+                lightTwoGreen.setColor(lightGreen);
+                lightTwoYellow.setColor(yellow);
+                lightTwoRed.setColor(red);
+
+                // Light One
+                lightOneGreen.setColor(green);
+                lightOneYellow.setColor(yellow);
+                lightOneRed.setColor(lightRed);
+
                 glutTimerFunc(5000, timer, dummy);
-            } else if (lightTwoYellowState) {
+            }
+
+            else if (lightTwoYellowState) {
+
+                // Change States
                 lightTwoYellowState = false;
+                lightTwoRedState = true;
+
+                // Change light colors
                 lightTwoGreen.setColor(green);
                 lightTwoYellow.setColor(lightYellow);
-                lightTwoRedState = true;
+                lightTwoRed.setColor(red);
+
+                // Light One
+                lightOneGreen.setColor(green);
+                lightOneYellow.setColor(yellow);
+                lightOneRed.setColor(lightRed);
+
                 glutTimerFunc(5000, timer, dummy);
-            } else if (lightTwoRedState) {
+            }
+
+            else if (lightTwoRedState) {
+
+                // Change states
                 lightTwoRedState = false;
-                lightTwoYellow.setColor(yellow);
-                lightTwoRed.setColor(lightRed);
-                lightTwoGreenState = true;
+                lightOneGreenState = true;
                 lightOneActive = true;
                 lightTwoActive = false;
+
+                // Change light colors
+                lightTwoGreen.setColor(green);
+                lightTwoYellow.setColor(yellow);
+                lightTwoRed.setColor(lightRed);
+
+                // Light One
+                lightOneGreen.setColor(green);
+                lightOneYellow.setColor(yellow);
+                lightOneRed.setColor(lightRed);
+
                 //lightOneGreenState = true;
                 glutTimerFunc(5000, timer, dummy);
             }
 
-                // If other light active, keep red lit
-            else {
-                lightTwoGreen.setColor(green);
-                lightTwoYellow.setColor(yellow);
-                //lightTwoRed.setColor(lightRed);
-                //glutTimerFunc(1000, timer, dummy);
-            }
         }
 
     }
