@@ -55,8 +55,6 @@ bool lightTwoGreenState;
 bool lightTwoYellowState;
 bool lightTwoRedState;
 
-Rect user;
-
 void initLightFields() {
 
     startLights = false;
@@ -113,25 +111,11 @@ void initLights () {
 
 }
 
-void initGrass() {
-    grass.setCenter(250, 450);
-    grass.setSize(width, height/3);
-    grass.setColor(grassGreen);
-}
-void initUser() {
-
-    user.setCenter(0, 0);
-    user.setSize(20, 20);
-    user.setColor(white);
-}
-
 void init() {
     width = 1280;
     height = 720;
     srand(time(0));
     initLights();
-    initGrass();
-    //initUser();
     initLightFields();
 }
 
@@ -161,8 +145,6 @@ void display() {
     lightTwoGreen.draw();
     lightTwoYellow.draw();
     lightTwoRed.draw();
-
-    user.draw();
 
     glFlush();  // Render now
 }
@@ -211,7 +193,7 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
-    user.setCenter(x, y);
+
     glutPostRedisplay();
 }
 
@@ -244,7 +226,7 @@ void timer(int dummy) {
             lightOneActive = true;
             lightOneGreenState = true;
 
-            glutTimerFunc(5000, timer, dummy);
+            glutTimerFunc(3000, timer, dummy);
 
         }
 
@@ -411,6 +393,7 @@ int main(int argc, char** argv) {
 
     // Logic
 
+    glutSetCursor(GLUT_CURSOR_DESTROY);
 
     glutTimerFunc(0, timer, 0);
 
