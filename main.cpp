@@ -89,7 +89,7 @@ void initLights () {
 
     lightOneRed.setRadius(65);
     lightOneRed.setCenter(395, 210);
-    lightOneRed.setColor(red);
+    lightOneRed.setColor(lightRed);
 
     // Right Light
     lightTwoBase.setSize(150, 450);
@@ -106,7 +106,7 @@ void initLights () {
 
     lightTwoRed.setRadius(65);
     lightTwoRed.setCenter(885, 210);
-    lightTwoRed.setColor(red);
+    lightTwoRed.setColor(lightRed);
 
 
 
