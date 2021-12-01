@@ -12,38 +12,41 @@ int wd;
 const color grassGreen(26/255.0, 176/255.0, 56/255.0);
 const color white(1, 1, 1);
 const color baseYellow(2/255.0, 184/255.0, 44/255.0);
-const color baseGrey(127/255.0,127/255.0,127/255.0);
-const color lightGreen(49/255.0, 201/255.0, 54/255.0);
-const color lightYellow(252/255.0, 252/255.0, 87/255.0);
-const color lightRed(245/255.0, 80/255.0, 39/255.0);
+const color baseGrey(64/255.0,64/255.0,64/255.0);
+const color lightGreen(0, .8, 0);
+const color lightYellow(.85, .85, 0);
+const color lightRed(1, 0, 0);
 const color green(0, .5, 0);
-const color yellow(.5, .5, 0);
+const color yellow(.45, .45, 0);
 const color red(.5, 0, 0);
 
 
 vector<unique_ptr<Shape>> clouds;
 Rect grass;
 
-// Light fields
+// Light one components
 Rect lightOneBase;
 Circle lightOneGreen;
 Circle lightOneYellow;
 Circle lightOneRed;
 
+// Light two components
 Rect lightTwoBase;
 Circle lightTwoGreen;
 Circle lightTwoYellow;
 Circle lightTwoRed;
 
-// States that light can be
-enum  lightStates{Null = 0, Green = 1, Yellow = 2, Red = 3, Error = 4};
+// States that light can be (not using currently)
+enum  lightStates{Null, Green, Yellow, Red, Error};
 
 // States
 bool startLights;
 
+// Switches which light is active
 bool lightOneActive;
 bool lightTwoActive;
 
+// Sets the state for the color of the lights
 bool lightOneGreenState;
 bool lightOneYellowState;
 bool lightOneRedState;
@@ -52,18 +55,15 @@ bool lightTwoGreenState;
 bool lightTwoYellowState;
 bool lightTwoRedState;
 
-
-vector<unique_ptr<Shape>> lightOne;
-
 Rect user;
 
-void initFields() {
+void initLightFields() {
 
     startLights = false;
     lightOneActive = false;
     lightTwoActive = false;
 
-    lightOneGreenState = true; // Initializer
+    lightOneGreenState = false;
     lightOneYellowState = false;
     lightOneRedState = false;
 
@@ -76,37 +76,36 @@ void initLights () {
 
     // Left Light
     lightOneBase.setSize(150, 450);
-    lightOneBase.setCenter(150, 450);
+    lightOneBase.setCenter(395, 360);
     lightOneBase.setColor(baseGrey);
 
     lightOneGreen.setRadius(65);
-    lightOneGreen.setCenter(150, 600);
+    lightOneGreen.setCenter(395, 510);
     lightOneGreen.setColor(green);
 
     lightOneYellow.setRadius(65);
-    lightOneYellow.setCenter(150, 450);
+    lightOneYellow.setCenter(395, 360);
     lightOneYellow.setColor(yellow);
 
     lightOneRed.setRadius(65);
-    lightOneRed.setCenter(150, 300);
+    lightOneRed.setCenter(395, 210);
     lightOneRed.setColor(red);
 
     // Right Light
-
     lightTwoBase.setSize(150, 450);
-    lightTwoBase.setCenter(1450, 450);
+    lightTwoBase.setCenter(885, 360);
     lightTwoBase.setColor(baseGrey);
 
     lightTwoGreen.setRadius(65);
-    lightTwoGreen.setCenter(1450, 600);
+    lightTwoGreen.setCenter(885, 510);
     lightTwoGreen.setColor(green);
 
     lightTwoYellow.setRadius(65);
-    lightTwoYellow.setCenter(1450, 450);
+    lightTwoYellow.setCenter(885, 360);
     lightTwoYellow.setColor(yellow);
 
     lightTwoRed.setRadius(65);
-    lightTwoRed.setCenter(1450, 300);
+    lightTwoRed.setCenter(885, 210);
     lightTwoRed.setColor(red);
 
 
@@ -120,46 +119,37 @@ void initGrass() {
     grass.setColor(grassGreen);
 }
 void initUser() {
-    // TODO: Initialize the user to be a 20x20 white block
-    // centered in the top left corner of the graphics window
+
     user.setCenter(0, 0);
     user.setSize(20, 20);
     user.setColor(white);
 }
 
 void init() {
-    width = 1600;
-    height = 900;
+    width = 1280;
+    height = 720;
     srand(time(0));
     initLights();
     initGrass();
-    initUser();
-    initFields();
+    //initUser();
+    initLightFields();
 }
 
-/* Initialize OpenGL Graphics */
 void initGL() {
-    // Set "clearing" or background color
-    glClearColor(.2, 0, .5, .5f);
+    glClearColor(0, 90/255.0, 130/255.0, 1);
 }
 
-/* Handler for window-repaint event. Call back when the window first appears and
- whenever the window needs to be re-painted. */
 void display() {
-    // Tell OpenGL to use the whole window for drawing
-    glViewport(0, 0, width, height); // DO NOT CHANGE THIS LINE (unless you are running Catalina on Mac)
 
-    // Do an orthographic parallel projection with the coordinate
-    // system set to first quadrant, limited by screen/window size
-    glMatrixMode(GL_PROJECTION); // DO NOT CHANGE THIS LINE
-    glLoadIdentity(); // DO NOT CHANGE THIS LINE
-    glOrtho(0.0, width, height, 0.0, -1.f, 1.f); // DO NOT CHANGE THIS LINE
+    glViewport(0, 0, width, height);
 
-    // Clear the color buffer with current clearing color
-    glClear(GL_COLOR_BUFFER_BIT); // DO NOT CHANGE THIS LINE
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0, width, height, 0.0, -1.f, 1.f);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // DO NOT CHANGE THIS LINE
+    glClear(GL_COLOR_BUFFER_BIT);
 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     // All Lights
     lightOneBase.draw();
@@ -179,7 +169,7 @@ void display() {
 
 // http://www.theasciicode.com.ar/ascii-control-characters/escape-ascii-code-27.html
 void kbd(unsigned char key, int x, int y) {
-    // escape
+
     if (key == 27) {
         glutDestroyWindow(wd);
         exit(0);
@@ -191,8 +181,9 @@ void kbd(unsigned char key, int x, int y) {
             exit(0);
         }
 
+        // When space key is pressed change bool to activate lights
         case 32: {
-            //lightOneActive = true;
+
             startLights = true;
         }
     }
@@ -251,14 +242,13 @@ void timer(int dummy) {
 
             // Activate state of first light to start loop
             lightOneActive = true;
+            lightOneGreenState = true;
 
             glutTimerFunc(5000, timer, dummy);
 
         }
 
         else if (lightOneActive) {
-            //startLights = false;
-            //lightOneGreenState = true;
 
             if (lightOneGreenState) {
 
@@ -276,8 +266,7 @@ void timer(int dummy) {
                 lightTwoYellow.setColor(yellow);
                 lightTwoRed.setColor(lightRed);
 
-                //lightTwoRed.setColor(lightRed);
-                glutTimerFunc(5000, timer, dummy);
+                glutTimerFunc(3000, timer, dummy);
             }
 
             else if (lightOneYellowState) {
@@ -296,7 +285,7 @@ void timer(int dummy) {
                 lightTwoYellow.setColor(yellow);
                 lightTwoRed.setColor(lightRed);
 
-                glutTimerFunc(5000, timer, dummy);
+                glutTimerFunc(3000, timer, dummy);
             }
 
             else if (lightOneRedState) {
@@ -317,15 +306,12 @@ void timer(int dummy) {
                 lightTwoYellow.setColor(yellow);
                 lightTwoRed.setColor(lightRed);
 
-                //lightTwoGreenState = true;
-                glutTimerFunc(5000, timer, dummy);
+                glutTimerFunc(3000, timer, dummy);
             }
 
         }
 
         else if (lightTwoActive) {
-
-            //lightTwoGreenState = true;
 
             if (lightTwoGreenState) {
 
@@ -343,7 +329,7 @@ void timer(int dummy) {
                 lightOneYellow.setColor(yellow);
                 lightOneRed.setColor(lightRed);
 
-                glutTimerFunc(5000, timer, dummy);
+                glutTimerFunc(3000, timer, dummy);
             }
 
             else if (lightTwoYellowState) {
@@ -362,7 +348,7 @@ void timer(int dummy) {
                 lightOneYellow.setColor(yellow);
                 lightOneRed.setColor(lightRed);
 
-                glutTimerFunc(5000, timer, dummy);
+                glutTimerFunc(3000, timer, dummy);
             }
 
             else if (lightTwoRedState) {
@@ -383,8 +369,7 @@ void timer(int dummy) {
                 lightOneYellow.setColor(yellow);
                 lightOneRed.setColor(lightRed);
 
-                //lightOneGreenState = true;
-                glutTimerFunc(5000, timer, dummy);
+                glutTimerFunc(3000, timer, dummy);
             }
 
         }
@@ -393,44 +378,34 @@ void timer(int dummy) {
 
 
     else {
-        glutTimerFunc(1000, timer, dummy);
+        glutTimerFunc(30, timer, dummy);
     }
     glutPostRedisplay();
 
-    //glutTimerFunc(3000, timer, dummy);
 }
 
-/* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char** argv) {
 
     init();
 
-    glutInit(&argc, argv);          // Initialize GLUT
+    glutInit(&argc, argv);
 
     glutInitDisplayMode(GLUT_RGBA);
 
     glutInitWindowSize((int)width, (int)height);
-    glutInitWindowPosition(150, 50); // Position the window's initial top-left corner
-    /* create the window and store the handle to it */
+    glutInitWindowPosition(300, 150);
     wd = glutCreateWindow("Finite State Machines Example: Traffic Lights");
 
-    // Register callback handler for window re-paint event
     glutDisplayFunc(display);
 
-    // Our own OpenGL initialization
     initGL();
 
-    // register keyboard press event processing function
-    // works for numbers, letters, spacebar, etc.
     glutKeyboardFunc(kbd);
 
-    // register special event: function keys, arrows, etc.
     glutSpecialFunc(kbdS);
 
-    // handles mouse movement
     glutPassiveMotionFunc(cursor);
 
-    // handles mouse click
     glutMouseFunc(mouse);
 
 
@@ -439,7 +414,6 @@ int main(int argc, char** argv) {
 
     glutTimerFunc(0, timer, 0);
 
-    // Enter the event-processing loop
     glutMainLoop();
     return 0;
 }

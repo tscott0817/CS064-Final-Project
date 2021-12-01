@@ -96,13 +96,9 @@ void Circle::changeRadius(double delta) {
 }
 
 void Circle::draw() const {
-    // Set drawing color to fill color
     glColor3f(fill.red, fill.green, fill.blue);
-    // Draw circle as Triangle Fan
     glBegin(GL_TRIANGLE_FAN);
-    // Draw center point
     glVertex2i(center.x, center.y);
-    // Draw points on edge of circle
     for (double i = 0; i < 2.0*PI+0.05; i += (2.0*PI)/360.0) {
         glVertex2i(center.x + (radius * cos(i)),
                    center.y + (radius * sin(i)));
