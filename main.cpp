@@ -1,17 +1,17 @@
 #include "main.h"
 #include "circle.h"
 #include "rect.h"
-#include <iostream>
-#include <memory>
-#include <vector>
 #include <ctime>
 using namespace std;
 
+/**
+ * Simple two-way traffic light system. Main logic in timer()
+ */
+
+
 GLdouble width, height;
 int wd;
-const color grassGreen(26/255.0, 176/255.0, 56/255.0);
-const color white(1, 1, 1);
-const color baseYellow(2/255.0, 184/255.0, 44/255.0);
+
 const color baseGrey(64/255.0,64/255.0,64/255.0);
 const color lightGreen(0, .8, 0);
 const color lightYellow(.85, .85, 0);
@@ -19,10 +19,6 @@ const color lightRed(1, 0, 0);
 const color green(0, .5, 0);
 const color yellow(.45, .45, 0);
 const color red(.5, 0, 0);
-
-
-vector<unique_ptr<Shape>> clouds;
-Rect grass;
 
 // Light one components
 Rect lightOneBase;
@@ -39,14 +35,12 @@ Circle lightTwoRed;
 // States that light can be (not using currently)
 enum  lightStates{Null, Green, Yellow, Red, Error};
 
-// States
+// All light states
 bool startLights;
 
-// Switches which light is active
 bool lightOneActive;
 bool lightTwoActive;
 
-// Sets the state for the color of the lights
 bool lightOneGreenState;
 bool lightOneYellowState;
 bool lightOneRedState;
@@ -55,6 +49,8 @@ bool lightTwoGreenState;
 bool lightTwoYellowState;
 bool lightTwoRedState;
 
+
+// Sets all initial values of states
 void initLightFields() {
 
     startLights = false;
@@ -70,6 +66,7 @@ void initLightFields() {
     lightTwoRedState = false;
 }
 
+// Sets parameters to build lights with
 void initLights () {
 
     // Left Light
@@ -106,9 +103,6 @@ void initLights () {
     lightTwoRed.setCenter(885, 210);
     lightTwoRed.setColor(lightRed);
 
-
-
-
 }
 
 void init() {
@@ -123,6 +117,7 @@ void initGL() {
     glClearColor(0, 90/255.0, 130/255.0, 1);
 }
 
+// Draws visuals in window
 void display() {
 
     glViewport(0, 0, width, height);
@@ -135,27 +130,22 @@ void display() {
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    // All Lights
+    // Make Light One
     lightOneBase.draw();
     lightOneGreen.draw();
     lightOneYellow.draw();
     lightOneRed.draw();
 
+    // Make Light Two
     lightTwoBase.draw();
     lightTwoGreen.draw();
     lightTwoYellow.draw();
     lightTwoRed.draw();
 
-    glFlush();  // Render now
+    glFlush();
 }
 
-// http://www.theasciicode.com.ar/ascii-control-characters/escape-ascii-code-27.html
 void kbd(unsigned char key, int x, int y) {
-
-    if (key == 27) {
-        glutDestroyWindow(wd);
-        exit(0);
-    }
 
     switch(key) {
         case 27: {
@@ -163,47 +153,13 @@ void kbd(unsigned char key, int x, int y) {
             exit(0);
         }
 
-        // When space key is pressed change bool to activate lights
+        // When space key is pressed, activate lights
         case 32: {
-
             startLights = true;
         }
     }
-
     glutPostRedisplay();
 }
-
-void kbdS(int key, int x, int y) {
-    switch(key) {
-        case GLUT_KEY_DOWN:
-
-            break;
-        case GLUT_KEY_LEFT:
-
-            break;
-        case GLUT_KEY_RIGHT:
-
-            break;
-        case GLUT_KEY_UP:
-
-            break;
-    }
-
-    glutPostRedisplay();
-}
-
-void cursor(int x, int y) {
-
-    glutPostRedisplay();
-}
-
-// button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
-// state will be GLUT_UP or GLUT_DOWN
-void mouse(int button, int state, int x, int y) {
-
-    glutPostRedisplay();
-}
-
 
 void timer(int dummy) {
 
@@ -230,6 +186,7 @@ void timer(int dummy) {
 
         }
 
+        // Light One
         else if (lightOneActive) {
 
             if (lightOneGreenState) {
@@ -293,6 +250,7 @@ void timer(int dummy) {
 
         }
 
+        // Light two
         else if (lightTwoActive) {
 
             if (lightTwoGreenState) {
@@ -353,17 +311,12 @@ void timer(int dummy) {
 
                 glutTimerFunc(3000, timer, dummy);
             }
-
         }
-
     }
-
-
     else {
         glutTimerFunc(30, timer, dummy);
     }
     glutPostRedisplay();
-
 }
 
 int main(int argc, char** argv) {
@@ -383,15 +336,6 @@ int main(int argc, char** argv) {
     initGL();
 
     glutKeyboardFunc(kbd);
-
-    glutSpecialFunc(kbdS);
-
-    glutPassiveMotionFunc(cursor);
-
-    glutMouseFunc(mouse);
-
-
-    // Logic
 
     glutSetCursor(GLUT_CURSOR_DESTROY);
 
