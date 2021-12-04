@@ -1,5 +1,4 @@
 # Traffic Light State Machine
--- Program in main.cpp --
 Simulation of a two-way traffic system using C++, openGL, and GLUT. It works through a simple 
 state machine made by using boolean logic switches. The flipping of these switches changes which
 light is active and which colors are lit up. States include:
