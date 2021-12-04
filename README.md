@@ -5,7 +5,7 @@ light is active and which colors are lit up. States include:
 
 ## Inactive States
 -   Null: The base state of the lights. Only red lit.
--   Error: Something has broken main loop(like a car crash); both lights flash red.
+-   Error(Not implemented): Something has broken main loop(like a car crash); both lights flash red.
 
 ## Active States 
 #### Parents
