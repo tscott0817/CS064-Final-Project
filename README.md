@@ -1,12 +1,11 @@
 # Traffic Light State Machine
-
-Simulation of a two-way traffic system using C++, openGL, and GLUT. It works through a simple 
+(All logic in main.cpp) Simulation of a two-way traffic system using C++, openGL, and GLUT. It works through a simple 
 state machine made by using boolean logic switches. The flipping of these switches changes which
 light is active and which colors are lit up. States include:
 
 ## Inactive States
--   Null: The base state of the lights. Only red lit.
--   Error: Something has broken main loop(like a car crash); both lights flash red.
+-   Initial State: The base state of the lights. Only red lit.
+-   Error(Not implemented): Something has broken main loop(like a car crash); both lights flash red.
 
 ## Active States 
 #### Parents
