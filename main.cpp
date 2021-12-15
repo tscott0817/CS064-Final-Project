@@ -8,7 +8,7 @@ using namespace std;
  * Simple two-way traffic light system. Main logic in timer()
  */
 
-
+// region Fields (Don't Need)
 GLdouble width, height;
 int wd;
 
@@ -34,6 +34,9 @@ Circle lightTwoRed;
 
 // States that light can be (not using currently)
 enum  lightStates{Null, Green, Yellow, Red, Error};
+//endregion
+
+//region Fields (Need)
 
 // All light states
 bool startLights;
@@ -65,7 +68,9 @@ void initLightFields() {
     lightTwoYellowState = false;
     lightTwoRedState = false;
 }
+//endregion
 
+// region Initializations
 // Sets parameters to build lights with
 void initLights () {
 
@@ -144,15 +149,15 @@ void display() {
 
     glFlush();
 }
+//endregion
 
+
+/**
+ * SPACEBAR start main loop
+ */
 void kbd(unsigned char key, int x, int y) {
 
     switch(key) {
-        case 27: {
-            glutDestroyWindow(wd);
-            exit(0);
-        }
-
         // When space key is pressed, activate lights
         case 32: {
             startLights = true;
@@ -161,6 +166,10 @@ void kbd(unsigned char key, int x, int y) {
     glutPostRedisplay();
 }
 
+/**
+ *  Timer Function
+ */
+//region Timers
 void timer(int dummy) {
 
     if(startLights) {
@@ -318,6 +327,7 @@ void timer(int dummy) {
     }
     glutPostRedisplay();
 }
+//endregion
 
 int main(int argc, char** argv) {
 
