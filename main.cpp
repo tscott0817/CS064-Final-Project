@@ -36,6 +36,9 @@ Circle lightTwoRed;
 enum  lightStates{Null, Green, Yellow, Red, Error};
 //endregion
 
+/**
+ * Fields used for states
+ */
 //region Fields (Need)
 
 // All light states
@@ -151,10 +154,10 @@ void display() {
 }
 //endregion
 
-
 /**
- * SPACEBAR start main loop
+ * SPACEBAR starts main loop
  */
+ //region Initial Action (Need)
 void kbd(unsigned char key, int x, int y) {
 
     switch(key) {
@@ -165,11 +168,12 @@ void kbd(unsigned char key, int x, int y) {
     }
     glutPostRedisplay();
 }
+//endregion
 
 /**
  *  Timer Function
  */
-//region Timers
+//region Timers (Need)
 void timer(int dummy) {
 
     if(startLights) {
@@ -327,7 +331,7 @@ void timer(int dummy) {
     }
     glutPostRedisplay();
 }
-//endregion
+//endregion (Need)
 
 int main(int argc, char** argv) {
 
