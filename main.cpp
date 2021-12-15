@@ -174,7 +174,7 @@ void kbd(unsigned char key, int x, int y) {
  *  Timer Function
  */
 //region Timers (Need)
-void timer(int dummy) {
+void timer(int currentTime) {
 
     if(startLights) {
 
@@ -195,7 +195,7 @@ void timer(int dummy) {
             lightOneActive = true;
             lightOneGreenState = true;
 
-            glutTimerFunc(3000, timer, dummy);
+            glutTimerFunc(3000, timer, currentTime);
 
         }
 
@@ -218,7 +218,7 @@ void timer(int dummy) {
                 lightTwoYellow.setColor(yellow);
                 lightTwoRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, dummy);
+                glutTimerFunc(3000, timer, currentTime);
             }
 
             else if (lightOneYellowState) {
@@ -237,7 +237,7 @@ void timer(int dummy) {
                 lightTwoYellow.setColor(yellow);
                 lightTwoRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, dummy);
+                glutTimerFunc(3000, timer, currentTime);
             }
 
             else if (lightOneRedState) {
@@ -258,7 +258,7 @@ void timer(int dummy) {
                 lightTwoYellow.setColor(yellow);
                 lightTwoRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, dummy);
+                glutTimerFunc(3000, timer, currentTime);
             }
 
         }
@@ -282,7 +282,7 @@ void timer(int dummy) {
                 lightOneYellow.setColor(yellow);
                 lightOneRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, dummy);
+                glutTimerFunc(3000, timer, currentTime);
             }
 
             else if (lightTwoYellowState) {
@@ -301,7 +301,7 @@ void timer(int dummy) {
                 lightOneYellow.setColor(yellow);
                 lightOneRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, dummy);
+                glutTimerFunc(3000, timer, currentTime);
             }
 
             else if (lightTwoRedState) {
@@ -322,12 +322,12 @@ void timer(int dummy) {
                 lightOneYellow.setColor(yellow);
                 lightOneRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, dummy);
+                glutTimerFunc(3000, timer, currentTime);
             }
         }
     }
     else {
-        glutTimerFunc(30, timer, dummy);
+        glutTimerFunc(30, timer, currentTime);
     }
     glutPostRedisplay();
 }
