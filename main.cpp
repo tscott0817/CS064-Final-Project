@@ -73,7 +73,7 @@ void initLightFields() {
 }
 //endregion
 
-// region Initializations
+// region Initializations (Don't Need)
 // Sets parameters to build lights with
 void initLights () {
 
@@ -152,7 +152,7 @@ void display() {
 
     glFlush();
 }
-//endregion
+//endregion (DOnt' Need)
 
 /**
  * SPACEBAR starts main loop
@@ -174,7 +174,7 @@ void kbd(unsigned char key, int x, int y) {
  *  Timer Function
  */
 //region Timers (Need)
-void timer(int currentTime) {
+void mainLoop(int currentTime) {
 
     if(startLights) {
 
@@ -195,7 +195,7 @@ void timer(int currentTime) {
             lightOneActive = true;
             lightOneGreenState = true;
 
-            glutTimerFunc(3000, timer, currentTime);
+            glutTimerFunc(3000, mainLoop, currentTime);
 
         }
 
@@ -218,7 +218,7 @@ void timer(int currentTime) {
                 lightTwoYellow.setColor(yellow);
                 lightTwoRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, currentTime);
+                glutTimerFunc(3000, mainLoop, currentTime);
             }
 
             else if (lightOneYellowState) {
@@ -237,7 +237,7 @@ void timer(int currentTime) {
                 lightTwoYellow.setColor(yellow);
                 lightTwoRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, currentTime);
+                glutTimerFunc(3000, mainLoop, currentTime);
             }
 
             else if (lightOneRedState) {
@@ -258,7 +258,7 @@ void timer(int currentTime) {
                 lightTwoYellow.setColor(yellow);
                 lightTwoRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, currentTime);
+                glutTimerFunc(3000, mainLoop, currentTime);
             }
 
         }
@@ -282,7 +282,7 @@ void timer(int currentTime) {
                 lightOneYellow.setColor(yellow);
                 lightOneRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, currentTime);
+                glutTimerFunc(3000, mainLoop, currentTime);
             }
 
             else if (lightTwoYellowState) {
@@ -301,7 +301,7 @@ void timer(int currentTime) {
                 lightOneYellow.setColor(yellow);
                 lightOneRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, currentTime);
+                glutTimerFunc(3000, mainLoop, currentTime);
             }
 
             else if (lightTwoRedState) {
@@ -322,12 +322,12 @@ void timer(int currentTime) {
                 lightOneYellow.setColor(yellow);
                 lightOneRed.setColor(lightRed);
 
-                glutTimerFunc(3000, timer, currentTime);
+                glutTimerFunc(3000, mainLoop, currentTime);
             }
         }
     }
     else {
-        glutTimerFunc(30, timer, currentTime);
+        glutTimerFunc(30, mainLoop, currentTime);
     }
     glutPostRedisplay();
 }
@@ -353,7 +353,7 @@ int main(int argc, char** argv) {
 
     glutSetCursor(GLUT_CURSOR_DESTROY);
 
-    glutTimerFunc(0, timer, 0);
+    glutTimerFunc(0, mainLoop, 0);
 
     glutMainLoop();
     return 0;
